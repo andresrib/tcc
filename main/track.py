@@ -83,7 +83,7 @@ def desenha(pista, tipo):
     background(255, 255, 255)
     # desenha a pista
     stroke(0,0,0)
-    strokeWeight(100)
+    strokeWeight(80)
     
     if(tipo==0):
         for i in range(len(pista) - 1):
