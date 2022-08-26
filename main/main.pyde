@@ -1,6 +1,6 @@
 import os
 from importlib import import_module
-import player, track
+import player, track, navigator
 
 desenhar=1
 nPista=1
@@ -13,26 +13,32 @@ acceleration_delay = 0
 def setup():
     size(1200, 700)
     track.inicializa_pista(pista, nPista)
-    global car
+    global car, ai
     
     car = player.player() 
+    ai = navigator.navigator(car)
 
 def draw():
     global pista, nPista, player
     background(255)
-    car.accelerate()
-    track.desenha(pista, nPista)
-    car.drawPlayer()
+    #car.accelerate()
     
-def keyPressed():
+    #ai.npc.accelerate()
+    track.desenha(pista, nPista)
+    ai.navigate()
+    #car.drawPlayer()
+    ai.drawNpc()
+    
+    
+"""def keyPressed():
     if(key == 'w' or key == 'W'):
-        car.setFowardTrue()
+        ai.npc.setFowardTrue()
     if(key == 's' or key == 'S'):
-        car.setBackTrue()
+        ai.npc.setBackTrue()
     if(key == 'a' or key == 'A'):
-        car.setLeftTrue()
+        ai.npc.setLeftTrue()
     if(key == 'd' or key == 'D'):
-        car.setRightTrue()
+        ai.npc.setRightTrue()
 
     
 def keyReleased():
@@ -43,5 +49,5 @@ def keyReleased():
     if(key == 'a' or key == 'A'):
         car.setLeftFalse()
     if(key == 'd' or key == 'D'):
-        car.setRightFalse()
+        car.setRightFalse()"""
     
