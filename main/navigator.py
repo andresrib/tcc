@@ -1,7 +1,7 @@
 import player
 
 class navigator():
-    def __init__(self, npc, desiredSpeed = 6, turningSpeed = 3, reverseDelay = 0, middleSensorDistance = 50, cornerSensorsDistance = 45, sideSensorsDistance = 60, previousTheta = PI, previousX = 0, previousY = 0):
+    def __init__(self, npc, desiredSpeed = 8, turningSpeed = 4, reverseDelay = 10, middleSensorDistance = 50, cornerSensorsDistance = 45, sideSensorsDistance = 60, previousTheta = PI, previousX = 0, previousY = 0):
         self.npc = npc
         self.desiredSpeed = desiredSpeed
         self.turningSpeed = turningSpeed
@@ -112,7 +112,16 @@ class navigator():
                 self.npc.setRightTrue()
             else:
                 self.npc.setFowardTrue()
-            
+        if (self.previousX == self.npc.x and self.previousY == self.npc.y and self.npc.speed>-1):
+            self.reverseDelay = self.reverseDelay - 1
+            if(self.reverseDelay<1):
+                self.npc.setFowardFalse()
+                self.npc.setBackTrue()
+                print("aaa")
+                if(self.reverseDelay<-3):
+                    self.reverseDelay = 10
         print(str(self.leftSideSensor) + str(self.leftSensor) + str(self.centerSensor) + str(self.rightSensor)+ str(self.rightSideSensor))
         self.previousTheta = self.npc.theta
+        self.previousX = self.npc.x
+        self.previousY = self.npc.y
         self.npc.accelerate()

@@ -67,9 +67,9 @@ class player():
     def checkColision(self):
         #print("cor" + str(get(int(self.x), int(self.y))))
         if(get(int(self.x + self.speedX), int(self.y + self.speedY)) == -1 or get(int(self.x + self.speedX), int(self.y + self.speedY)) == 0):
-            #if(self.speed != 0):
-            #    self.speed = (self.speed - (abs(self.speed)/self.speed)) * -1
-            self.speed = 0
+            if(self.speed != 0):
+                self.speed = (self.speed - (abs(self.speed)/self.speed)) * -1
+            #self.speed = 0
             return False
         else:
             return True

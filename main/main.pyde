@@ -3,7 +3,7 @@ from importlib import import_module
 import player, track, navigator
 
 desenhar=1
-nPista=1
+nPista=2
 nSensores=3
 pista = []
 acceleration_delay = 0
