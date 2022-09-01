@@ -14,31 +14,32 @@ def setup():
     size(1200, 700)
     track.inicializa_pista(pista, nPista)
     global car, ai
-    
-    car = player.player() 
+    if(nPista == 0):
+        car = player.player(450, 180)
+    elif(nPista == 1):
+        car = player.player(400, 180)
+    elif(nPista == 2):
+        car = player.player(450, 180)
     ai = navigator.navigator(car)
 
 def draw():
     global pista, nPista, player
     background(255)
     #car.accelerate()
-    
-    #ai.npc.accelerate()
     track.desenha(pista, nPista)
     ai.navigate()
     #car.drawPlayer()
     ai.drawNpc()
     
-    
-"""def keyPressed():
+def keyPressed():
     if(key == 'w' or key == 'W'):
-        ai.npc.setFowardTrue()
+        car.setFowardTrue()
     if(key == 's' or key == 'S'):
-        ai.npc.setBackTrue()
+        car.setBackTrue()
     if(key == 'a' or key == 'A'):
-        ai.npc.setLeftTrue()
+        car.setLeftTrue()
     if(key == 'd' or key == 'D'):
-        ai.npc.setRightTrue()
+        car.setRightTrue()
 
     
 def keyReleased():
@@ -49,5 +50,5 @@ def keyReleased():
     if(key == 'a' or key == 'A'):
         car.setLeftFalse()
     if(key == 'd' or key == 'D'):
-        car.setRightFalse()"""
+        car.setRightFalse()
     

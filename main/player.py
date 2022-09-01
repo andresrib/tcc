@@ -1,5 +1,5 @@
 class player():
-    def __init__(self, x = 400, y = 180, theta = (PI*2), speed = 0, acceleration = 2, desaceleration = -1, maxSpeed = 10, minSpeed = - 8, speedX = 0, speedY = 0, dTheta = PI/72.0, delay = 0, right = False, left = False, foward = False, back = False):
+    def __init__(self, x , y , theta = (PI*2), speed = 0, acceleration = 2, desaceleration = -1, maxSpeed = 10, minSpeed = - 8, speedX = 0, speedY = 0, dTheta = PI/72.0, delay = 0, right = False, left = False, foward = False, back = False):
         self.x = x
         
         self.y = y
@@ -51,20 +51,25 @@ class player():
                 self.speed = self.minSpeed
         if self.left == True:
             self.theta -= self.dTheta
+            if self.speed > 8:
+                self.theta -= self.dTheta
         if self.right == True:
             self.theta += self.dTheta
+            if self.speed > 8:
+                self.theta += self.dTheta
         #if self.speed > 2 and self.delay%30 == 0:
         #    self.speed = self.speed - 1
         self.delay = self.delay - 1
         self.speedX = self.speed*cos(self.theta)
-        self.speedY = self.speed*sin(self.theta)
-        
+        self.speedY = self.speed*sin(self.theta)        
         
         
     def checkColision(self):
         #print("cor" + str(get(int(self.x), int(self.y))))
-        if(get(int(self.x + self.speedX), int(self.y + self.speedY)) == -1):
-            self.speed = (self.speed - (abs(self.speed)/self.speed)) * -1
+        if(get(int(self.x + self.speedX), int(self.y + self.speedY)) == -1 or get(int(self.x + self.speedX), int(self.y + self.speedY)) == 0):
+            #if(self.speed != 0):
+            #    self.speed = (self.speed - (abs(self.speed)/self.speed)) * -1
+            self.speed = 0
             return False
         else:
             return True

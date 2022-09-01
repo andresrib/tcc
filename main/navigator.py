@@ -1,44 +1,87 @@
 import player
 
 class navigator():
-    def __init__(self, npc, desiredSpeed = 8, turningSpeed = 4, reverseDelay = 10, middleSensorDistance = 50, cornerSensorsDistance = 45):
+    def __init__(self, npc, desiredSpeed = 6, turningSpeed = 3, reverseDelay = 0, middleSensorDistance = 50, cornerSensorsDistance = 45, sideSensorsDistance = 60, previousTheta = PI, previousX = 0, previousY = 0):
         self.npc = npc
         self.desiredSpeed = desiredSpeed
         self.turningSpeed = turningSpeed
         self.reverseDelay = reverseDelay
         self.middleSensorDistance = middleSensorDistance
         self.cornerSensorsDistance = cornerSensorsDistance
+        self.sideSensorsDistance = sideSensorsDistance
+        self.leftSideSensor = True
         self.leftSensor = True
         self.centerSensor = True
         self.rightSensor = True
+        self.rightSideSensor = True
+        self.previousTheta = previousTheta
+        self.previousX = previousX
+        self.previousY = previousY
+        
     def drawNpc(self):
         self.npc.drawPlayer()
         stroke(0,0,250)
         strokeWeight(3)
-        point(self.npc.x + (self.cornerSensorsDistance-4)*cos(self.npc.theta - PI/8), self.npc.y + (self.cornerSensorsDistance-4)*sin(self.npc.theta - PI/8))
+        point(self.npc.x + (self.sideSensorsDistance-4)*cos(self.npc.theta - PI/2), self.npc.y + (self.sideSensorsDistance-4)*sin(self.npc.theta - PI/2))
+        point(self.npc.x + (self.cornerSensorsDistance-4)*cos(self.npc.theta - PI/4), self.npc.y + (self.cornerSensorsDistance-4)*sin(self.npc.theta - PI/4))
         point(self.npc.x + (self.middleSensorDistance-4)*cos(self.npc.theta), self.npc.y + (self.middleSensorDistance-4)*sin(self.npc.theta))
-        point(self.npc.x + (self.cornerSensorsDistance-4)*cos(self.npc.theta + PI/8), self.npc.y + (self.cornerSensorsDistance-4)*sin(self.npc.theta + PI/8))
+        point(self.npc.x + (self.cornerSensorsDistance-4)*cos(self.npc.theta + PI/4), self.npc.y + (self.cornerSensorsDistance-4)*sin(self.npc.theta + PI/4))
+        point(self.npc.x + (self.sideSensorsDistance-4)*cos(self.npc.theta + PI/2), self.npc.y + (self.sideSensorsDistance-4)*sin(self.npc.theta + PI/2))
         
     
     def navigate(self):
-        self.leftSensor = get(int(self.npc.x + self.cornerSensorsDistance*cos(self.npc.theta - PI/8)), int(self.npc.y + self.cornerSensorsDistance*sin(self.npc.theta - PI/8))) == -1
+        leftSideSensorPixel = get(int(self.npc.x + (self.sideSensorsDistance)*cos(self.npc.theta - PI/2)), int(self.npc.y + (self.sideSensorsDistance)*sin(self.npc.theta - PI/2)))
+        leftSensorPixel = get(int(self.npc.x + self.cornerSensorsDistance*cos(self.npc.theta - PI/4)), int(self.npc.y + self.cornerSensorsDistance*sin(self.npc.theta - PI/4)))
+        centerSensorPixel = get(int(self.npc.x + self.middleSensorDistance*cos(self.npc.theta)), int(self.npc.y + self.middleSensorDistance*sin(self.npc.theta)))
+        rightSensorPixel = get(int(self.npc.x + self.cornerSensorsDistance*cos(self.npc.theta + PI/4)), int(self.npc.y + self.cornerSensorsDistance*sin(self.npc.theta + PI/4)))
+        rightSideSensorPixel = get(int(self.npc.x + (self.sideSensorsDistance)*cos(self.npc.theta + PI/2)), int(self.npc.y + (self.sideSensorsDistance)*sin(self.npc.theta + PI/2)))
+        
+        self.leftSideSensor = leftSideSensorPixel != -1 and leftSideSensorPixel != 0
+        
+        self.leftSensor = leftSensorPixel != -1 and leftSensorPixel != 0
         #print(get(int(self.npc.x + self.cornerSensorsDistance*cos(self.npc.theta - PI/8)), int(self.npc.y + self.cornerSensorsDistance*sin(self.npc.theta - PI/8))))
-        self.centerSensor = get(int(self.npc.x + self.middleSensorDistance*cos(self.npc.theta)), int(self.npc.y + self.middleSensorDistance*sin(self.npc.theta))) != -1
+        self.centerSensor = centerSensorPixel != -1 and centerSensorPixel != 0
         #print(get(int(self.npc.x + self.middleSensorDistance*cos(self.npc.theta)), int(self.npc.y + self.middleSensorDistance*sin(self.npc.theta))))
-        self.rightSensor = get(int(self.npc.x + self.cornerSensorsDistance*cos(self.npc.theta + PI/8)), int(self.npc.y + self.cornerSensorsDistance*sin(self.npc.theta + PI/8))) != -1
+        self.rightSensor = rightSensorPixel != -1 and rightSensorPixel != 0
+        #print(get(int(self.npc.x + self.cornerSensorsDistance*cos(self.npc.theta + PI/8)), int(self.npc.y + self.cornerSensorsDistance*sin(self.npc.theta + PI/8))))
+        self.rightSideSensor = rightSideSensorPixel != -1 and rightSideSensorPixel != 0
+        
+        
         if(self.leftSensor and self.centerSensor and self.rightSensor):
             if(self.npc.speed < self.desiredSpeed):
                 self.npc.setBackFalse()
                 self.npc.setFowardTrue()
             else:
                 self.npc.setFowardFalse()
+            if(self.leftSideSensor and not self.rightSideSensor):
+                self.npc.setLeftTrue()
+            elif(not self.leftSideSensor and self.rightSideSensor):
+                self.npc.setRightTrue()
         else:
             self.npc.setFowardFalse()
+        
+        
         if(self.leftSensor and self.centerSensor and not self.rightSensor):
+            self.npc.setRightFalse()
+            self.npc.setLeftTrue()
+        else:
+            if(self.leftSensor and not self.centerSensor and not self.rightSensor):
+                if(self.npc.speed > self.turningSpeed):
+                    self.npc.setFowardFalse()
+                    self.npc.setBackTrue()
+                else:
+                    self.npc.setBackFalse()
+                self.npc.setRightFalse()
+                self.npc.setLeftTrue()
+            else:
+                self.npc.setLeftFalse()
+        
+        
+        if(not self.leftSensor and self.centerSensor and self.rightSensor):
             self.npc.setLeftFalse()
             self.npc.setRightTrue()
         else:
-            if(self.leftSensor and not self.centerSensor and not self.rightSensor):
+            if(not self.leftSensor and not self.centerSensor and self.rightSensor):
                 if(self.npc.speed > self.turningSpeed):
                     self.npc.setFowardFalse()
                     self.npc.setBackTrue()
@@ -49,23 +92,27 @@ class navigator():
             else:
                 self.npc.setRightFalse()
         
-        if(not self.leftSensor and self.centerSensor and self.rightSensor):
-            self.npc.setRightFalse()
-            self.npc.setLeftTrue()
-        else:
-            if(not self.leftSensor and self.centerSensor and self.rightSensor):
-                if(self.npc.speed > self.turningSpeed):
-                    self.npc.setFowardFalse()
-                    self.npc.setBackTrue()
-                else:
-                    self.npc.setBackFalse()
-                self.npc.setRightFalse()
-                self.npc.setLeftTrue()
-            else:
-                self.npc.setLeftFalse()
+        
         if(not self.leftSensor and not self.centerSensor and not self.rightSensor):
             self.npc.setFowardFalse()
             self.npc.setBackTrue()
+            if(self.leftSideSensor and not self.rightSideSensor):
+                self.npc.setLeftTrue()
+            elif(not self.leftSideSensor and self.rightSideSensor):
+                self.npc.setRightTrue()
+            elif(self.npc.theta == self.previousTheta):
+                self.npc.setLeftTrue()
         else:
             self.npc.setBackFalse()
+            
+        if(self.leftSensor and not self.centerSensor and self.rightSensor):
+            if(self.leftSideSensor and not self.rightSideSensor):
+                self.npc.setLeftTrue()
+            elif(not self.leftSideSensor and self.rightSideSensor):
+                self.npc.setRightTrue()
+            else:
+                self.npc.setFowardTrue()
+            
+        print(str(self.leftSideSensor) + str(self.leftSensor) + str(self.centerSensor) + str(self.rightSensor)+ str(self.rightSideSensor))
+        self.previousTheta = self.npc.theta
         self.npc.accelerate()
