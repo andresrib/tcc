@@ -1,11 +1,13 @@
 import player
 
 class navigator():
-    def __init__(self, npc, desiredSpeed , turningSpeed , reverseDelay , track,  middleSensorDistance = 50, cornerSensorsDistance = 45, sideSensorsDistance = 60, previousTheta = PI, previousX = 0, previousY = 0, fitness = 0, laps = 0):
+    def __init__(self, npc, desiredSpeed , turningSpeed , startingReverseDelay , track, middleSensorDistance = 50, cornerSensorsDistance = 45, sideSensorsDistance = 60, previousTheta = PI, previousX = 0, previousY = 0, fitness = 0, laps = 0):
         self.npc = npc
         self.desiredSpeed = desiredSpeed
         self.turningSpeed = turningSpeed
-        self.reverseDelay = reverseDelay
+        self.reverseDelay = startingReverseDelay
+        self.startingReverseDelay = startingReverseDelay
+        self.track = track
         self.middleSensorDistance = middleSensorDistance
         self.cornerSensorsDistance = cornerSensorsDistance
         self.sideSensorsDistance = sideSensorsDistance
@@ -32,8 +34,21 @@ class navigator():
       
     def trainNpc(self):
         self.npc.training()
+        self.finishTrack()
+        if(laps==0):
+            fitness = fitness + 1
     
-    def finishTrack()
+    def finishTrack(self):
+        if(self.track == 0):
+            if(self.previousY>190 and self.npc.y <= 190 and self.npc.x > 400 and self.npc.x < 500):
+                self.laps = self.laps + 1
+        elif(self.track == 1):
+            if(0<self.previousX<390 and self.npc.x >= 390 and self.npc.y < 250):
+                self.laps = self.laps + 1
+        elif(self.track == 2):
+            if(self.previousY>210 and self.npc.y <= 210 and self.npc.x > 400 and self.npc.x < 500):
+                self.laps = self.laps + 1
+        
     def navigate(self):
         leftSideSensorPixel = get(int(self.npc.x + (self.sideSensorsDistance)*cos(self.npc.theta - PI/2)), int(self.npc.y + (self.sideSensorsDistance)*sin(self.npc.theta - PI/2)))
         leftSensorPixel = get(int(self.npc.x + self.cornerSensorsDistance*cos(self.npc.theta - PI/4)), int(self.npc.y + self.cornerSensorsDistance*sin(self.npc.theta - PI/4)))
@@ -127,6 +142,13 @@ class navigator():
                     self.reverseDelay = 10
         #print(str(self.leftSideSensor) + str(self.leftSensor) + str(self.centerSensor) + str(self.rightSensor)+ str(self.rightSideSensor))
         self.previousTheta = self.npc.theta
+        self.finishTrack()
+        if(self.laps==0):
+            self.fitness = self.fitness + 1
+        else:
+            stroke(0, 0, 255)
+            strokeWeight(10)
+            point(300, 300)
         self.previousX = self.npc.x
         self.previousY = self.npc.y
         self.npc.accelerate()

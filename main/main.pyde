@@ -28,9 +28,9 @@ def setup():
     aeStrings = aeData.split("\n")
     aeStrings.remove("")
     n = len(aeStrings) - 30
-    print(aeStrings)
+    #print(aeStrings)
     del aeStrings[:n]
-    print(aeStrings)
+    #print(aeStrings)
     size(1200, 700)
     track.inicializa_pista(pista, nPista)
     global car, ai
@@ -44,14 +44,14 @@ def setup():
     ai = []
     for cromossome in aeStrings:
         dSpeed, tSpeed, rDelay = cromossome.split(" ")
-        ai.append(navigator.navigator(car, dSpeed, tSpeed, rDelay, nPista))
+        ai.append(navigator.navigator(car, int(dSpeed), int(tSpeed), int(rDelay), nPista))
     #print(ai)
     background(255)
     track.desenha(pista, nPista)
-    car.drawPlayer()
+
 def draw():
     global pista, nPista, player, trainingMode
-    
+    """
     if(trainingMode):
         while(trainingMode):
             for candidate in ai:
@@ -66,7 +66,13 @@ def draw():
         ai.navigate()
         #car.drawPlayer()
         ai.drawNpc()
-    
+    """
+    background(255)
+    #car.accelerate()
+    track.desenha(pista, nPista)
+    ai[0].navigate()
+    #car.drawPlayer()
+    ai[0].drawNpc()
 def keyPressed():
     global trainingMode
     if(key == 'w' or key == 'W'):
