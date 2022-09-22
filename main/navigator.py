@@ -48,6 +48,8 @@ class navigator():
         elif(self.track == 2):
             if(self.previousY>210 and self.npc.y <= 210 and self.npc.x > 400 and self.npc.x < 500):
                 self.laps = self.laps + 1
+        if(self.fitness>1800 and self.laps == 0):
+            self.laps = 1
         
     def navigate(self):
         leftSideSensorPixel = get(int(self.npc.x + (self.sideSensorsDistance)*cos(self.npc.theta - PI/2)), int(self.npc.y + (self.sideSensorsDistance)*sin(self.npc.theta - PI/2)))
@@ -139,7 +141,7 @@ class navigator():
                 self.npc.setBackTrue()
                 #print("aaa")
                 if(self.reverseDelay<-3):
-                    self.reverseDelay = 10
+                    self.reverseDelay = startingReverseDelay
         #print(str(self.leftSideSensor) + str(self.leftSensor) + str(self.centerSensor) + str(self.rightSensor)+ str(self.rightSideSensor))
         self.previousTheta = self.npc.theta
         self.finishTrack()
