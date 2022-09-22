@@ -1,5 +1,5 @@
 class player():
-    def __init__(self, x , y , theta = (PI*2), speed = 0, acceleration = 2, desaceleration = -1, maxSpeed = 10, minSpeed = - 8, speedX = 0, speedY = 0, dTheta = PI/72.0, delay = 0, right = False, left = False, foward = False, back = False):
+    def __init__(self, x , y , theta = (PI*2), speed = 0, acceleration = 2, desaceleration = -1, maxSpeed = 15, minSpeed = - 8, speedX = 0, speedY = 0, dTheta = PI/72.0, delay = 0, right = False, left = False, foward = False, back = False):
         self.x = x
         
         self.y = y
@@ -33,7 +33,7 @@ class player():
         self.foward = foward
         
         self.back = back
-                
+                        
     def accelerate(self):
         if self.foward == True:
             if(self.speed + self.acceleration <= self.maxSpeed):
@@ -106,7 +106,12 @@ class player():
         
     def setBackFalse(self):
         self.back = False
-
+    
+    def training(self):
+        if(self.checkColision()):
+            self.x += self.speedX
+            self.y += self.speedY
         
+       
         
     

@@ -1,7 +1,7 @@
 import player
 
 class navigator():
-    def __init__(self, npc, desiredSpeed = 8, turningSpeed = 4, reverseDelay = 10, middleSensorDistance = 50, cornerSensorsDistance = 45, sideSensorsDistance = 60, previousTheta = PI, previousX = 0, previousY = 0):
+    def __init__(self, npc, desiredSpeed , turningSpeed , reverseDelay , track,  middleSensorDistance = 50, cornerSensorsDistance = 45, sideSensorsDistance = 60, previousTheta = PI, previousX = 0, previousY = 0, fitness = 0, laps = 0):
         self.npc = npc
         self.desiredSpeed = desiredSpeed
         self.turningSpeed = turningSpeed
@@ -17,6 +17,8 @@ class navigator():
         self.previousTheta = previousTheta
         self.previousX = previousX
         self.previousY = previousY
+        self.fitness = fitness
+        self.laps = laps
         
     def drawNpc(self):
         self.npc.drawPlayer()
@@ -27,8 +29,11 @@ class navigator():
         point(self.npc.x + (self.middleSensorDistance-4)*cos(self.npc.theta), self.npc.y + (self.middleSensorDistance-4)*sin(self.npc.theta))
         point(self.npc.x + (self.cornerSensorsDistance-4)*cos(self.npc.theta + PI/4), self.npc.y + (self.cornerSensorsDistance-4)*sin(self.npc.theta + PI/4))
         point(self.npc.x + (self.sideSensorsDistance-4)*cos(self.npc.theta + PI/2), self.npc.y + (self.sideSensorsDistance-4)*sin(self.npc.theta + PI/2))
-        
+      
+    def trainNpc(self):
+        self.npc.training()
     
+    def finishTrack()
     def navigate(self):
         leftSideSensorPixel = get(int(self.npc.x + (self.sideSensorsDistance)*cos(self.npc.theta - PI/2)), int(self.npc.y + (self.sideSensorsDistance)*sin(self.npc.theta - PI/2)))
         leftSensorPixel = get(int(self.npc.x + self.cornerSensorsDistance*cos(self.npc.theta - PI/4)), int(self.npc.y + self.cornerSensorsDistance*sin(self.npc.theta - PI/4)))
@@ -117,10 +122,10 @@ class navigator():
             if(self.reverseDelay<1):
                 self.npc.setFowardFalse()
                 self.npc.setBackTrue()
-                print("aaa")
+                #print("aaa")
                 if(self.reverseDelay<-3):
                     self.reverseDelay = 10
-        print(str(self.leftSideSensor) + str(self.leftSensor) + str(self.centerSensor) + str(self.rightSensor)+ str(self.rightSideSensor))
+        #print(str(self.leftSideSensor) + str(self.leftSensor) + str(self.centerSensor) + str(self.rightSensor)+ str(self.rightSideSensor))
         self.previousTheta = self.npc.theta
         self.previousX = self.npc.x
         self.previousY = self.npc.y
