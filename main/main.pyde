@@ -13,46 +13,72 @@ trainingMode = True
 
 
 def setup():
-    ae = open("AE.txt", "r")
-    """if(ae.read() == ""):
-        ae.close()
-        ae = open("AE.txt", "a")
-        ae.write("geracao 1:\n")
-        for i in range(30):
-            dSpeed = random.randint(1,15)
-            tSpeed = random.randint(1,15)
-            rDelay = random.randint(1,60)
-            ae.write(str(dSpeed) + " " + str(tSpeed) + " " + str(rDelay) + "\n")"""
-    aeData = ae.read()
-    ae.close()     
-    aeStrings = aeData.split("\n")
-    aeStrings.remove("")
-    n = len(aeStrings) - 30
-    #print(aeStrings)
-    del aeStrings[:n]
-    #print(aeStrings)
     size(1200, 700)
-    track.inicializa_pista(pista, nPista)
-    global car, ai
-    if(nPista == 0):
-        car = player.player(450, 180)
-    elif(nPista == 1):
-        car = player.player(400, 180)
-    elif(nPista == 2):
-        car = player.player(450, 180)
-    
-    ai = []
-    for cromossome in aeStrings:
-        dSpeed, tSpeed, rDelay, = cromossome.split(" ")
-        ai.append(navigator.navigator(car, int(dSpeed), int(tSpeed), int(rDelay), nPista))
-    #print(ai)
-    background(255)
-    track.desenha(pista, nPista)
+    if(not trainingMode):
+        ae = open("AE.txt", "r")
+        """if(ae.read() == ""):
+            ae.close()
+            ae = open("AE.txt", "a")
+            ae.write("geracao 1:\n")
+            for i in range(30):
+                dSpeed = random.randint(1,15)
+                tSpeed = random.randint(1,15)
+                rDelay = random.randint(1,60)
+                ae.write(str(dSpeed) + " " + str(tSpeed) + " " + str(rDelay) + "\n")"""
+        aeData = ae.read()
+        ae.close()     
+        aeStrings = aeData.split("\n")
+        aeStrings.remove("")
+        n = len(aeStrings) - 30
+        #print(aeStrings)
+        del aeStrings[:n]
+        #print(aeStrings)
+        track.inicializa_pista(pista, nPista)
+        global car, ai
+        if(nPista == 0):
+            car = player.player(450, 180)
+        elif(nPista == 1):
+            car = player.player(400, 180)
+        elif(nPista == 2):
+            car = player.player(450, 180)
+        
+        ai = []
+        for cromossome in aeStrings:
+            dSpeed, tSpeed, rDelay, = cromossome.split(" ")
+            ai.append(navigator.navigator(car, int(dSpeed), int(tSpeed), int(rDelay), nPista))
+        #print(ai)
+        background(255)
+        track.desenha(pista, nPista)
 
 def draw():
     global pista, nPista, player, trainingMode
     
     if(trainingMode):
+        nPista = random.randint(0, 2)
+        ae = open("AE.txt", "r")
+        aeData = ae.read()
+        ae.close()     
+        aeStrings = aeData.split("\n")
+        aeStrings.remove("")
+        n = len(aeStrings) - 30
+        del aeStrings[:n]
+        
+        track.inicializa_pista(pista, nPista)
+        global car, ai
+        if(nPista == 0):
+            car = player.player(450, 180)
+        elif(nPista == 1):
+            car = player.player(400, 180)
+        elif(nPista == 2):
+            car = player.player(450, 180)
+        
+        ai = []
+        for cromossome in aeStrings:
+            dSpeed, tSpeed, rDelay, = cromossome.split(" ")
+            ai.append(navigator.navigator(car, int(dSpeed), int(tSpeed), int(rDelay), nPista))
+        #print(ai)
+        background(255)
+        track.desenha(pista, nPista)
         while(ai[0].laps == 0 and ai[1].laps == 0 and ai[2].laps == 0 and ai[3].laps == 0 and ai[4].laps == 0 and ai[5].laps == 0 and ai[6].laps == 0 and ai[7].laps == 0 and ai[8].laps == 0 and ai[9].laps == 0 and ai[10].laps == 0 
                   and ai[11].laps == 0 and ai[12].laps == 0 and ai[13].laps == 0 and ai[14].laps == 0 and ai[15].laps == 0 and ai[16].laps == 0 and ai[17].laps == 0 and ai[18].laps == 0 and ai[19].laps == 0 and ai[20].laps == 0 
                       and ai[21].laps == 0 and  ai[22].laps == 0 and ai[23].laps == 0 and ai[24].laps == 0 and ai[25].laps == 0 and ai[26].laps == 0 and ai[27].laps == 0 and ai[28].laps == 0 and ai[29].laps == 0):
@@ -67,9 +93,9 @@ def draw():
                 fit.write(str(candidate.fitness) + "\n")
                 if(candidate.fitness < best[3]):
                     best = [candidate.desiredSpeed, candidate.turningSpeed, candidate.reverseDelay, candidate.fitness]
-        with open("AE.txt", "a") as ae
+        with open("AE.txt", "a") as ae:
             for candidate in ai:
-                if (candidate.fitness != best[3]):
+                if (candidate.desiredSpeed != best[0] or candidate.turningSpeed != best[1] or candidate.reverseDelay != best[2]):
                     if(random.randint(1, 20) != 1):
                         dSpeed = (candidate.desiredSpeed + best[0])//2
                     else:
@@ -86,7 +112,7 @@ def draw():
                     dSpeed = best[0]
                     tSpeed = best[1]
                     rDelay = best[2]
-                ae.write(dSpeed + " " + tSpeed + " " + rDelay + "\n")
+                ae.write(str(dSpeed) + " " + str(tSpeed) + " " + str(rDelay) + "\n")
             
     else:
         background(255)

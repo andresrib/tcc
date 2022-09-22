@@ -34,9 +34,6 @@ class navigator():
       
     def trainNpc(self):
         self.npc.training()
-        self.finishTrack()
-        if(laps==0):
-            fitness = fitness + 1
     
     def finishTrack(self):
         if(self.track == 0):
@@ -141,16 +138,12 @@ class navigator():
                 self.npc.setBackTrue()
                 #print("aaa")
                 if(self.reverseDelay<-3):
-                    self.reverseDelay = startingReverseDelay
+                    self.reverseDelay = self.startingReverseDelay
         #print(str(self.leftSideSensor) + str(self.leftSensor) + str(self.centerSensor) + str(self.rightSensor)+ str(self.rightSideSensor))
         self.previousTheta = self.npc.theta
         self.finishTrack()
         if(self.laps==0):
             self.fitness = self.fitness + 1
-        else:
-            stroke(0, 0, 255)
-            strokeWeight(10)
-            point(300, 300)
         self.previousX = self.npc.x
         self.previousY = self.npc.y
         self.npc.accelerate()
