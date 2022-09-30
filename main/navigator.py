@@ -1,7 +1,7 @@
 import player
 
 class navigator():
-    def __init__(self, npc, desiredSpeed , turningSpeed , startingReverseDelay , track, middleSensorDistance = 50, cornerSensorsDistance = 45, sideSensorsDistance = 60, previousTheta = PI, previousX = 0, previousY = 0, fitness = 0, laps = 0):
+    def __init__(self, npc, desiredSpeed , turningSpeed , startingReverseDelay , track, middleSensorDistance = 50, cornerSensorsDistance = 45, sideSensorsDistance = 60, previousTheta = PI, previousX = 0, previousY = 0, fitness = 0, laps = 0, middlePoint = False):
         self.npc = npc
         self.desiredSpeed = desiredSpeed
         self.turningSpeed = turningSpeed
@@ -21,6 +21,7 @@ class navigator():
         self.previousY = previousY
         self.fitness = fitness
         self.laps = laps
+        self.middlePoint = middlePoint
         
     def drawNpc(self):
         self.npc.drawPlayer()
@@ -37,13 +38,24 @@ class navigator():
     
     def finishTrack(self):
         if(self.track == 0):
-            if(self.previousY>190 and self.npc.y <= 190 and self.npc.x > 400 and self.npc.x < 500):
+            if(self.previousX>450 and self.npc.x <= 450 and self.npc.y > 400 and self.npc.y < 500):
+                self.middlePoint = True
+                #exit()
+            if(self.previousY>190 and self.npc.y <= 190 and self.npc.x > 400 and self.npc.x < 500 and self.middlePoint):
                 self.laps = self.laps + 1
+                #exit()
         elif(self.track == 1):
-            if(0<self.previousX<390 and self.npc.x >= 390 and self.npc.y < 250):
+            if(self.previousX>450 and self.npc.x <= 450 and self.npc.y > 350 and self.npc.y < 500):
+                self.middlePoint = True
+                #exit()
+            if(0<self.previousX<390 and self.npc.x >= 390 and self.npc.y < 250 and self.middlePoint):
                 self.laps = self.laps + 1
+                #exit()
         elif(self.track == 2):
-            if(self.previousY>210 and self.npc.y <= 210 and self.npc.x > 400 and self.npc.x < 500):
+            if(self.previousY>190 and self.npc.y <= 190 and self.npc.x > 400 and self.npc.x < 500):
+                self.middlePoint = True
+                #exit()
+            if(self.previousY>210 and self.npc.y <= 210 and self.npc.x > 400 and self.npc.x < 500 and self.middlePoint):
                 self.laps = self.laps + 1
         if(self.fitness>1800 and self.laps == 0):
             self.laps = 1
@@ -58,11 +70,8 @@ class navigator():
         self.leftSideSensor = leftSideSensorPixel != -1 and leftSideSensorPixel != 0
         
         self.leftSensor = leftSensorPixel != -1 and leftSensorPixel != 0
-        #print(get(int(self.npc.x + self.cornerSensorsDistance*cos(self.npc.theta - PI/8)), int(self.npc.y + self.cornerSensorsDistance*sin(self.npc.theta - PI/8))))
         self.centerSensor = centerSensorPixel != -1 and centerSensorPixel != 0
-        #print(get(int(self.npc.x + self.middleSensorDistance*cos(self.npc.theta)), int(self.npc.y + self.middleSensorDistance*sin(self.npc.theta))))
         self.rightSensor = rightSensorPixel != -1 and rightSensorPixel != 0
-        #print(get(int(self.npc.x + self.cornerSensorsDistance*cos(self.npc.theta + PI/8)), int(self.npc.y + self.cornerSensorsDistance*sin(self.npc.theta + PI/8))))
         self.rightSideSensor = rightSideSensorPixel != -1 and rightSideSensorPixel != 0
         
         
@@ -136,14 +145,13 @@ class navigator():
             if(self.reverseDelay<1):
                 self.npc.setFowardFalse()
                 self.npc.setBackTrue()
-                #print("aaa")
                 if(self.reverseDelay<-3):
                     self.reverseDelay = self.startingReverseDelay
-        #print(str(self.leftSideSensor) + str(self.leftSensor) + str(self.centerSensor) + str(self.rightSensor)+ str(self.rightSideSensor))
         self.previousTheta = self.npc.theta
         self.finishTrack()
         if(self.laps==0):
             self.fitness = self.fitness + 1
+        print(self.fitness)
         self.previousX = self.npc.x
         self.previousY = self.npc.y
         self.npc.accelerate()
