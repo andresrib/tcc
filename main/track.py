@@ -2,6 +2,7 @@
 
 def inicializa_pista(pista,nPista): 
     
+    #gera as coordenadas da pista
     if(nPista==0):
         
         pista.append((100,150))
@@ -81,10 +82,9 @@ def inicializa_pista(pista,nPista):
             
 def desenha(pista, tipo):
     background(255, 255, 255)
-    # desenha a pista
     stroke(0,0,0)
     strokeWeight(80)
-    
+    # desenha a pista
     if(tipo==0):
         for i in range(len(pista) - 1):
             line(pista[i][0], pista[i][1], pista[i+1][0], pista[i+1][1])

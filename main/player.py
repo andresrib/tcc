@@ -34,7 +34,9 @@ class player():
         
         self.back = back
                         
+    
     def accelerate(self):
+        #aumenta a speed pelo valor de acceleration sem ultrapassar a maxspeed
         if self.foward == True:
             if(self.speed + self.acceleration <= self.maxSpeed):
                 if(self.delay <= 0):
@@ -42,6 +44,7 @@ class player():
                     self.delay = 5
             else:
                 self.speed = self.maxSpeed
+        #diminue a speed pelo valor de desaceleration sem ultrapassar a minSpeed
         if self.back == True:
             if(self.speed + self.desaceleration >= self.minSpeed):
                 if(self.delay <= 0):
@@ -49,21 +52,24 @@ class player():
                     self.delay = 5
             else:
                 self.speed = self.minSpeed
+        #subtrai dTheta do angulo do carro, caso a velocidade seja maior que 8, subtrai 2dTheta
         if self.left == True:
             self.theta -= self.dTheta
             if self.speed > 8:
                 self.theta -= self.dTheta
+        #soma dTheta do angulo do carro, caso a velocidade seja maior que 8, soma 2dTheta
         if self.right == True:
             self.theta += self.dTheta
             if self.speed > 8:
                 self.theta += self.dTheta
         #if self.speed > 2 and self.delay%30 == 0:
         #    self.speed = self.speed - 1
+        #delay utilizado para que a aceleracao e desaceleracao nao sejam rapidas demais
         self.delay = self.delay - 1
         self.speedX = self.speed*cos(self.theta)
         self.speedY = self.speed*sin(self.theta)        
         
-        
+    #checa a colisao do carro    
     def checkColision(self):
         #print("cor" + str(get(int(self.x), int(self.y))))
         if(get(int(self.x + self.speedX), int(self.y + self.speedY)) == -1 or get(int(self.x + self.speedX), int(self.y + self.speedY)) == 0):
@@ -73,7 +79,8 @@ class player():
             return False
         else:
             return True
-        
+     
+    #atualiza a posicao e desenha o carro    
     def drawPlayer(self):
         stroke(255, 0, 0)
         strokeWeight(5)
@@ -107,6 +114,7 @@ class player():
     def setBackFalse(self):
         self.back = False
     
+    #atualiza a posicao sem desenhar o carro
     def training(self):
         if(self.checkColision()):
             self.x += self.speedX
