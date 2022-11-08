@@ -5,9 +5,9 @@ from importlib import import_module
 import player, track, navigator
 
 #escolha da pista, entre 0 1 e 2
-nPista=2#random.randint(0, 2)
+nPista=0#random.randint(0, 2)
 #modo de treino, sendo 0 nao treinando, 1 treinando visualmente de forma lenta e 2 sendo o treino nao visual rapido
-trainingMode = 2
+trainingMode = 0
 
 pista = []
 
@@ -28,7 +28,7 @@ def setup():
         initial_y = 180
     car = player.player(initial_x, initial_y)
     #inicia um navegador de teste para o modo de treino 0
-    tester = navigator.navigator(car, 11, 4, 32, nPista)
+    tester = navigator.navigator(car, 9, 9, 33, nPista)
     #inicia os 30 navegadores iniciais para o treino
     for i in range(30):
         ai.append(navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), nPista))
@@ -154,7 +154,7 @@ def draw():
                         with open("gn.txt", "r") as gn:
                             results = fit.read()
                             generations = gn.read()
-                            print(results)
+                            #print(results)
                             if nPista == 0:
                                 with open ("resultados/v1_fitness_pista0.txt", "a") as r:
                                     r.write("melhor e media\n\n")
