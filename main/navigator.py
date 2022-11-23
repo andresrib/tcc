@@ -64,8 +64,8 @@ class navigator():
                 self.laps = self.laps + 1
                 self.middlePoint = False
                 #exit()
-        if(self.fitness>1800 and self.laps == 0):
-            self.laps = 1
+        if(self.fitness>3600):
+            self.laps = 10
         
     def navigate(self):
         #verifica a cor na posicao dos sensores
