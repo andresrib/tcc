@@ -5,9 +5,9 @@ from importlib import import_module
 import player, track, navigator
 
 #escolha da pista, entre 0 1 e 2
-nPista=1
+nPista=2
 #modo de treino, sendo 0 nao treinando, 1 treinando visualmente de forma lenta e 2 sendo o treino nao visual rapido
-trainingMode = 0
+trainingMode = 2
 
 colisionWeight = 1
 
@@ -31,12 +31,12 @@ def setup():
         initial_y = 180
     car = player.player(initial_x, initial_y)
     #inicia um navegador de teste para o modo de treino 0
-    tester = navigator.navigator(car, 11, 4, 20, nPista)
+    tester = navigator.navigator(car, 11, 4, 20, nPista, 50, 45, 60)
     #inicia os 30 navegadores iniciais para o treino
     for i in range(30):
-        ai.append(navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), nPista))
+        ai.append(navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), nPista, random.randint(30, 90), random.randint(30, 90), random.randint(30, 90)))
     #inicia um placeholder para o melhor da geracao
-    best = navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), nPista)#[0, 0, 0, 1802]
+    best = navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), nPista, random.randint(30, 90), random.randint(30, 90), random.randint(30, 90))#[0, 0, 0, 1802]
     best.fitness = 1000000000
     background(255)
     track.desenha(pista, nPista)
@@ -125,6 +125,7 @@ def draw():
         with open("Fitness.txt", "a") as fit:
             average = 0
             for candidate in ai:
+                candidate.fitness += candidate.npc.colisions * colisionWeight
                 average += candidate.fitness
                 if(candidate.fitness <= best.fitness):
                     best = candidate#[candidate.desiredSpeed, candidate.turningSpeed, candidate.startingReverseDelay, candidate.fitness]
@@ -133,26 +134,38 @@ def draw():
             newAi = []
             with open("gn.txt", "a") as gn:
                 for candidate in ai:
-                    gn.write(str(candidate.desiredSpeed) + " " + str(candidate.turningSpeed) + " " + str(candidate.startingReverseDelay) + " " + str(candidate.fitness) + "\n")
+                    gn.write(str(candidate.desiredSpeed) + " " + str(candidate.turningSpeed) + " " + str(candidate.startingReverseDelay) + " " + str(candidate.middleSensorDistance) + " " + str(candidate.cornerSensorsDistance) + " " + str(candidate.sideSensorsDistance) + " " + str(candidate.fitness) + "\n")
                     if (candidate != best):#candidate.desiredSpeed != best[0] or candidate.turningSpeed != best[1] or candidate.startingReverseDelay != best[2]):
                         dSpeed = (candidate.desiredSpeed + best.desiredSpeed)//2
                         tSpeed = (candidate.turningSpeed + best.turningSpeed)//2
                         rDelay = (candidate.startingReverseDelay + best.startingReverseDelay)//2
+                        msDistance = (candidate.middleSensorDistance + best.middleSensorDistance)//2
+                        csDistance = (candidate.cornerSensorsDistance + best.cornerSensorsDistance)//2
+                        ssDistance = (candidate.sideSensorsDistance + best.sideSensorsDistance)//2
                         if(random.randint(1, 20) == 1):
                             dSpeed = random.randint(1,15)
                         if(random.randint(1, 20) == 1):
                             tSpeed = random.randint(1,15)
                         if(random.randint(1, 20) == 1):
                             rDelay = random.randint(1,60)
+                        if(random.randint(1, 20) == 1):
+                            msDistance = random.randint(30,90)
+                        if(random.randint(1, 20) == 1):
+                            csDistance = random.randint(30,90)
+                        if(random.randint(1, 20) == 1):
+                            ssDistance = random.randint(30,90)
                     else:
                         dSpeed = best.desiredSpeed
                         tSpeed = best.turningSpeed
                         rDelay = best.startingReverseDelay
-                    newAi.append(navigator.navigator(player.player(initial_x, initial_y), int(dSpeed), int(tSpeed), int(rDelay), nPista))
+                        msDistance =  best.middleSensorDistance
+                        csDistance = best.cornerSensorsDistance
+                        ssDistance = best.sideSensorsDistance
+                    newAi.append(navigator.navigator(player.player(initial_x, initial_y), int(dSpeed), int(tSpeed), int(rDelay), nPista, msDistance, csDistance, ssDistance))
                 gn.write("\n")
                 ai = newAi
                 #print(loops)
-                if(loops >= 200):
+                if(loops >= 49):
                     #salva os dados do experimento em arquivos persistentes
                     with open("Fitness.txt", "r") as fit:
                         with open("gn.txt", "r") as gn:
@@ -160,35 +173,61 @@ def draw():
                             generations = gn.read()
                             #print(results)
                             if nPista == 0:
-                                with open ("resultados/v2_fitness_pista0.txt", "a") as r:
+                                with open ("resultados/v3_fitness_pista0.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v2_gn_pista0.txt", "a") as gen:
+                                with open ("resultados/v3_gn_pista0.txt", "a") as gen:
                                     gen.write("teste\n\n")
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 1:
-                                with open ("resultados/v2_fitness_pista1.txt", "a") as r:
+                                with open ("resultados/v3_fitness_pista1.txt", "a") as r:
                                     r.write("melhor e media\n")
                                     r.write(results)
                                     r.write("\n")
-                                with open ("resultados/v2_gn_pista1.txt", "a") as gen:
+                                with open ("resultados/v3_gn_pista1.txt", "a") as gen:
                                     gen.write("teste\n\n")
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 2:
-                                with open ("resultados/v2_fitness_pista2.txt", "a") as r:
+                                with open ("resultados/v3_fitness_pista2.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v2_gn_pista2.txt", "a") as gen:
+                                with open ("resultados/v3_gn_pista2.txt", "a") as gen:
                                     gen.write("teste\n")
                                     gen.write(generations)
                                     gen.write("\n\n")
                     exit()
                 loops = loops + 1
-    #training mode 0, modo de controle manual           
+    #testa todas as possibilidades
+    elif(trainingMode == 3):
+        ai = []
+        for sp in range(1, 16):
+            for tsp in range(1, 16):
+                for rd in range(1, 61):
+                    ai.append(navigator.navigator(player.player(initial_x, initial_y), sp, tsp, rd, nPista))
+        for candidate in ai:
+            while candidate.laps<goal:
+                candidate.fitness = candidate.fitness+1
+                candidate.navigate()
+                candidate.trainNpc()
+            print(candidate.fitness)
+        with open("resultados/todos_fitness_pista2.txt", "w") as fit:
+            average = 0
+            for candidate in ai:
+                average += candidate.fitness
+                if(candidate.fitness <= best.fitness):
+                    best = candidate#[candidate.desiredSpeed, candidate.turningSpeed, candidate.startingReverseDelay, candidate.fitness]
+            #print(best)
+            fit.write(str(best.fitness) + "\t"  + str(average/30) + "\n")
+        with open("resultados/todos_gn_pista2.txt", "w") as gn:
+                for candidate in ai:
+                    gn.write(str(candidate.desiredSpeed) + " " + str(candidate.turningSpeed) + " " + str(candidate.startingReverseDelay) + " " + str(candidate.fitness) + "\n")
+        exit()
+
+        #training mode 0, modo de controle manual           
     else:
         background(255)
         #car.accelerate()
