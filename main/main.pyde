@@ -136,23 +136,29 @@ def draw():
                 for candidate in ai:
                     gn.write(str(candidate.desiredSpeed) + " " + str(candidate.turningSpeed) + " " + str(candidate.startingReverseDelay) + " " + str(candidate.middleSensorDistance) + " " + str(candidate.cornerSensorsDistance) + " " + str(candidate.sideSensorsDistance) + " " + str(candidate.fitness) + "\n")
                     if (candidate != best):#candidate.desiredSpeed != best[0] or candidate.turningSpeed != best[1] or candidate.startingReverseDelay != best[2]):
-                        dSpeed = (candidate.desiredSpeed + best.desiredSpeed)//2
-                        tSpeed = (candidate.turningSpeed + best.turningSpeed)//2
-                        rDelay = (candidate.startingReverseDelay + best.startingReverseDelay)//2
-                        msDistance = (candidate.middleSensorDistance + best.middleSensorDistance)//2
-                        csDistance = (candidate.cornerSensorsDistance + best.cornerSensorsDistance)//2
-                        ssDistance = (candidate.sideSensorsDistance + best.sideSensorsDistance)//2
-                        if(random.randint(1, 20) == 1):
+                        percentual = random.randint(8, 12)/10.0
+                        dSpeed = (candidate.desiredSpeed + best.desiredSpeed * percentual)//2
+                        percentual = random.randint(8, 12)/10.0
+                        tSpeed = (candidate.turningSpeed + best.turningSpeed * percentual)//2
+                        percentual = random.randint(8, 12)/10.0
+                        rDelay = (candidate.startingReverseDelay + best.startingReverseDelay * percentual)//2
+                        percentual = random.randint(8, 12)/10.0
+                        msDistance = (candidate.middleSensorDistance + best.middleSensorDistance * percentual)//2
+                        percentual = random.randint(8, 12)/10.0
+                        csDistance = (candidate.cornerSensorsDistance + best.cornerSensorsDistance * percentual)//2
+                        percentual = random.randint(8, 12)/10.0
+                        ssDistance = (candidate.sideSensorsDistance + best.sideSensorsDistance * percentual)//2
+                        if(random.randint(1, 10) == 1):
                             dSpeed = random.randint(1,15)
-                        if(random.randint(1, 20) == 1):
+                        if(random.randint(1, 10) == 1):
                             tSpeed = random.randint(1,15)
-                        if(random.randint(1, 20) == 1):
+                        if(random.randint(1, 10) == 1):
                             rDelay = random.randint(1,60)
-                        if(random.randint(1, 20) == 1):
+                        if(random.randint(1, 10) == 1):
                             msDistance = random.randint(30,90)
-                        if(random.randint(1, 20) == 1):
+                        if(random.randint(1, 10) == 1):
                             csDistance = random.randint(30,90)
-                        if(random.randint(1, 20) == 1):
+                        if(random.randint(1, 10) == 1):
                             ssDistance = random.randint(30,90)
                     else:
                         dSpeed = best.desiredSpeed
@@ -173,29 +179,29 @@ def draw():
                             generations = gn.read()
                             #print(results)
                             if nPista == 0:
-                                with open ("resultados/v3_fitness_pista0.txt", "a") as r:
+                                with open ("resultados/v4_fitness_pista0.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v3_gn_pista0.txt", "a") as gen:
+                                with open ("resultados/v4_gn_pista0.txt", "a") as gen:
                                     gen.write("teste\n\n")
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 1:
-                                with open ("resultados/v3_fitness_pista1.txt", "a") as r:
+                                with open ("resultados/v4_fitness_pista1.txt", "a") as r:
                                     r.write("melhor e media\n")
                                     r.write(results)
                                     r.write("\n")
-                                with open ("resultados/v3_gn_pista1.txt", "a") as gen:
+                                with open ("resultados/v4_gn_pista1.txt", "a") as gen:
                                     gen.write("teste\n\n")
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 2:
-                                with open ("resultados/v3_fitness_pista2.txt", "a") as r:
+                                with open ("resultados/v4_fitness_pista2.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v3_gn_pista2.txt", "a") as gen:
+                                with open ("resultados/v4_gn_pista2.txt", "a") as gen:
                                     gen.write("teste\n")
                                     gen.write(generations)
                                     gen.write("\n\n")
