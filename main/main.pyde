@@ -115,7 +115,10 @@ def draw():
         #testa todos os candidatos ao mesmo tempo para melhor otimizacao
         while(ai[0].laps < goal or ai[1].laps < goal or ai[2].laps < goal or ai[3].laps < goal or ai[4].laps < goal or ai[5].laps < goal or ai[6].laps < goal or ai[7].laps < goal or ai[8].laps < goal or ai[9].laps < goal or ai[10].laps < goal 
                   or ai[11].laps < goal or ai[12].laps < goal or ai[13].laps < goal or ai[14].laps < goal or ai[15].laps < goal or ai[16].laps < goal or ai[17].laps < goal or ai[18].laps < goal or ai[19].laps < goal or ai[20].laps < goal 
-                      or ai[21].laps < goal or  ai[22].laps < goal or ai[23].laps < goal or ai[24].laps < goal or ai[25].laps < goal or ai[26].laps < goal or ai[27].laps < goal or ai[28].laps < goal or ai[29].laps < goal):
+                      or ai[21].laps < goal or  ai[22].laps < goal or ai[23].laps < goal or ai[24].laps < goal or ai[25].laps < goal or ai[26].laps < goal or ai[27].laps < goal or ai[28].laps < goal or ai[29].laps < goal or ai[30].laps < goal or ai[31].laps < goal or ai[32].laps < goal
+                       or ai[33].laps < goal or ai[34].laps < goal or ai[35].laps < goal or ai[36].laps < goal or ai[37].laps < goal or ai[38].laps < goal or ai[39].laps < goal or ai[40].laps < goal 
+                  or ai[41].laps < goal or ai[42].laps < goal or ai[43].laps < goal or ai[44].laps < goal or ai[45].laps < goal or ai[46].laps < goal or ai[47].laps < goal or ai[48].laps < goal or ai[49].laps < goal or ai[50].laps < goal 
+                      or ai[51].laps < goal or  ai[52].laps < goal or ai[53].laps < goal or ai[54].laps < goal or ai[55].laps < goal or ai[56].laps < goal or ai[57].laps < goal or ai[58].laps < goal or ai[59].laps < goal):
             for candidate in ai:
                 if candidate.laps < goal:
                     candidate.fitness = candidate.fitness+1
