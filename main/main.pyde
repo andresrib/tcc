@@ -5,7 +5,7 @@ from importlib import import_module
 import player, track, navigator
 
 #escolha da pista, entre 0 1 e 2
-nPista=0
+nPista=2
 #modo de treino, sendo 0 nao treinando, 1 treinando visualmente de forma lenta e 2 sendo o treino nao visual rapido
 trainingMode = 2
 
@@ -33,7 +33,7 @@ def setup():
     #inicia um navegador de teste para o modo de treino 0
     tester = navigator.navigator(car, 11, 4, 20, nPista)
     #inicia os 30 navegadores iniciais para o treino
-    for i in range(30):
+    for i in range(60):
         ai.append(navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), nPista))
     #inicia um placeholder para o melhor da geracao
     best = navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), nPista)#[0, 0, 0, 1802]
@@ -163,29 +163,29 @@ def draw():
                             generations = gn.read()
                             #print(results)
                             if nPista == 0:
-                                with open ("resultados/v2_fitness_pista0.txt", "a") as r:
+                                with open ("resultados/v2_population_fitness_pista0.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v2_gn_pista0.txt", "a") as gen:
+                                with open ("resultados/v2_population_gn_pista0.txt", "a") as gen:
                                     gen.write("teste\n\n")
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 1:
-                                with open ("resultados/v2_fitness_pista1.txt", "a") as r:
+                                with open ("resultados/v2_population_fitness_pista1.txt", "a") as r:
                                     r.write("melhor e media\n")
                                     r.write(results)
                                     r.write("\n")
-                                with open ("resultados/v2_gn_pista1.txt", "a") as gen:
+                                with open ("resultados/v2_population_gn_pista1.txt", "a") as gen:
                                     gen.write("teste\n\n")
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 2:
-                                with open ("resultados/v2_fitness_pista2.txt", "a") as r:
+                                with open ("resultados/v2_population_fitness_pista2.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v2_gn_pista2.txt", "a") as gen:
+                                with open ("resultados/v2_population_gn_pista2.txt", "a") as gen:
                                     gen.write("teste\n")
                                     gen.write(generations)
                                     gen.write("\n\n")
