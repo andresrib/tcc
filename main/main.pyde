@@ -5,9 +5,9 @@ from importlib import import_module
 import player, track, navigator
 
 #escolha da pista, entre 0 1 e 2
-nPista=1
+nPista=2
 #modo de treino, sendo 0 nao treinando, 1 treinando visualmente de forma lenta e 2 sendo o treino nao visual rapido
-trainingMode = 0
+trainingMode = 2
 
 colisionWeight = 1
 
@@ -152,7 +152,7 @@ def draw():
                 gn.write("\n")
                 ai = newAi
                 #print(loops)
-                if(loops >= 200):
+                if(loops >= 99):
                     #salva os dados do experimento em arquivos persistentes
                     with open("Fitness.txt", "r") as fit:
                         with open("gn.txt", "r") as gn:
@@ -160,29 +160,29 @@ def draw():
                             generations = gn.read()
                             #print(results)
                             if nPista == 0:
-                                with open ("resultados/v2_fitness_pista0.txt", "a") as r:
+                                with open ("resultados/v2_generations_fitness_pista0.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v2_gn_pista0.txt", "a") as gen:
+                                with open ("resultados/v2_generations_gn_pista0.txt", "a") as gen:
                                     gen.write("teste\n\n")
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 1:
-                                with open ("resultados/v2_fitness_pista1.txt", "a") as r:
+                                with open ("resultados/v2_generations_fitness_pista1.txt", "a") as r:
                                     r.write("melhor e media\n")
                                     r.write(results)
                                     r.write("\n")
-                                with open ("resultados/v2_gn_pista1.txt", "a") as gen:
+                                with open ("resultados/v2_generations_gn_pista1.txt", "a") as gen:
                                     gen.write("teste\n\n")
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 2:
-                                with open ("resultados/v2_fitness_pista2.txt", "a") as r:
+                                with open ("resultados/v2_generations_fitness_pista2.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v2_gn_pista2.txt", "a") as gen:
+                                with open ("resultados/v2_generations_gn_pista2.txt", "a") as gen:
                                     gen.write("teste\n")
                                     gen.write(generations)
                                     gen.write("\n\n")
