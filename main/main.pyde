@@ -89,11 +89,11 @@ def draw():
                         percentual = random.randint(8, 12)/10.0
                         rDelay = (candidate.startingReverseDelay + best.startingReverseDelay * percentual)//2
                         #mutacao
-                        if(random.randint(1, 10) == 1):
+                        if(random.randint(1, 20) == 1):
                             dSpeed = random.randint(1,15)
-                        if(random.randint(1, 10) == 1):
+                        if(random.randint(1, 20) == 1):
                             tSpeed = random.randint(1,15)
-                        if(random.randint(1, 10) == 1):
+                        if(random.randint(1, 20) == 1):
                             rDelay = random.randint(1,60)
                     else:
                         dSpeed = best.desiredSpeed
@@ -144,11 +144,11 @@ def draw():
                         tSpeed = (candidate.turningSpeed + best.turningSpeed * percentual)//2
                         percentual = random.randint(8, 12)/10.0
                         rDelay = (candidate.startingReverseDelay + best.startingReverseDelay * percentual)//2
-                        if(random.randint(1, 10) == 1):
+                        if(random.randint(1, 20) == 1):
                             dSpeed = random.randint(1,15)
-                        if(random.randint(1, 10) == 1):
+                        if(random.randint(1, 20) == 1):
                             tSpeed = random.randint(1,15)
-                        if(random.randint(1, 10) == 1):
+                        if(random.randint(1, 20) == 1):
                             rDelay = random.randint(1,60)
                     else:
                         dSpeed = best.desiredSpeed
@@ -158,7 +158,7 @@ def draw():
                 gn.write("\n")
                 ai = newAi
                 #print(loops)
-                if(loops >= 50):
+                if(loops >= 49):
                     #salva os dados do experimento em arquivos persistentes
                     with open("Fitness.txt", "r") as fit:
                         with open("gn.txt", "r") as gn:
@@ -166,29 +166,29 @@ def draw():
                             generations = gn.read()
                             #print(results)
                             if nPista == 0:
-                                with open ("resultados/v2_new_crossover_fitness_pista0.txt", "a") as r:
+                                with open ("resultados/v2_cross_fitness_pista0.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v2_new_crossover_gn_pista0.txt", "a") as gen:
+                                with open ("resultados/v2_cross_gn_pista0.txt", "a") as gen:
                                     gen.write("teste\n\n")
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 1:
-                                with open ("resultados/v2_new_crossover_fitness_pista1.txt", "a") as r:
+                                with open ("resultados/v2_cross_fitness_pista1.txt", "a") as r:
                                     r.write("melhor e media\n")
                                     r.write(results)
                                     r.write("\n")
-                                with open ("resultados/v2_new_crossover_gn_pista1.txt", "a") as gen:
+                                with open ("resultados/v2_cross_gn_pista1.txt", "a") as gen:
                                     gen.write("teste\n\n")
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 2:
-                                with open ("resultados/v2_new_crossover_fitness_pista2.txt", "a") as r:
+                                with open ("resultados/v2_cross_fitness_pista2.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v2_new_crossover_gn_pista2.txt", "a") as gen:
+                                with open ("resultados/v2_cross_gn_pista2.txt", "a") as gen:
                                     gen.write("teste\n")
                                     gen.write(generations)
                                     gen.write("\n\n")
