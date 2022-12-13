@@ -7,7 +7,7 @@ import player, track, navigator
 #escolha da pista, entre 0 1 e 2
 nPista=2
 #modo de treino, sendo 0 nao treinando, 1 treinando visualmente de forma lenta e 2 sendo o treino nao visual rapido
-trainingMode = 2
+trainingMode = 0
 
 colisionWeight = 1
 
@@ -30,8 +30,8 @@ def setup():
         initial_x = 450
         initial_y = 180
     car = player.player(initial_x, initial_y)
-    #inicia um navegador de teste para o modo de treino 0
-    tester = navigator.navigator(car, 11, 4, 20, nPista, 50, 45, 60)
+    #inicia um navegador de teste para o modo de treino 0 0 14 52.0 72.0 57.0
+    tester = navigator.navigator(car, 0, 0, 14, nPista, 52, 72, 57)
     #inicia os 30 navegadores iniciais para o treino
     for i in range(30):
         ai.append(navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), nPista, random.randint(30, 90), random.randint(30, 90), random.randint(30, 90)))
@@ -239,6 +239,7 @@ def draw():
         #car.accelerate()
         track.desenha(pista, nPista)
         tester.navigate()
+        #print("middle: " + str(tester.middlePoint) + "\nlaps: " + str(tester.laps))
         strokeWeight(10)
         stroke(0, 0, 255)
         #car.drawPlayer()
