@@ -7,7 +7,7 @@ import player, track, navigator
 #escolha da pista, entre 0 1 e 2
 nPista=2
 #modo de treino, sendo 0 nao treinando, 1 treinando visualmente de forma lenta e 2 sendo o treino nao visual rapido
-trainingMode = 0
+trainingMode = 2
 
 colisionWeight = 1
 
@@ -160,6 +160,8 @@ def draw():
                             csDistance = random.randint(30,90)
                         if(random.randint(1, 10) == 1):
                             ssDistance = random.randint(30,90)
+                            
+                        
                     else:
                         dSpeed = best.desiredSpeed
                         tSpeed = best.turningSpeed
@@ -167,6 +169,38 @@ def draw():
                         msDistance =  best.middleSensorDistance
                         csDistance = best.cornerSensorsDistance
                         ssDistance = best.sideSensorsDistance
+                        
+                        
+                            
+                    if dSpeed < 1:
+                        dSpeed = 1
+                    if dSpeed > 15:
+                        dSpeed = 15
+                        
+                    if tSpeed < 1:
+                        tSpeed = 1
+                    if tSpeed > 15:
+                        tSpeed = 15
+                            
+                    if rDelay < 1:
+                        rDelay = 1
+                    if rDelay > 60:
+                        rDelay = 60
+                            
+                    if msDistance < 30:
+                        msDistance = 30
+                    if msDistance > 90:
+                        msDistance = 90
+                            
+                    if csDistance < 30:
+                        csDistance = 30
+                    if csDistance > 90:
+                        csDistance = 90
+                            
+                    if ssDistance < 30:
+                        ssDistance = 30
+                    if ssDistance > 90:
+                        ssDistance = 90    
                     newAi.append(navigator.navigator(player.player(initial_x, initial_y), int(dSpeed), int(tSpeed), int(rDelay), nPista, msDistance, csDistance, ssDistance))
                 gn.write("\n")
                 ai = newAi
@@ -179,29 +213,29 @@ def draw():
                             generations = gn.read()
                             #print(results)
                             if nPista == 0:
-                                with open ("resultados/v4_fitness_pista0.txt", "a") as r:
+                                with open ("resultados/v5_fitness_pista0.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v4_gn_pista0.txt", "a") as gen:
+                                with open ("resultados/v5_gn_pista0.txt", "a") as gen:
                                     gen.write("teste\n\n")
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 1:
-                                with open ("resultados/v4_fitness_pista1.txt", "a") as r:
+                                with open ("resultados/v5_fitness_pista1.txt", "a") as r:
                                     r.write("melhor e media\n")
                                     r.write(results)
                                     r.write("\n")
-                                with open ("resultados/v4_gn_pista1.txt", "a") as gen:
+                                with open ("resultados/v5_gn_pista1.txt", "a") as gen:
                                     gen.write("teste\n\n")
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 2:
-                                with open ("resultados/v4_fitness_pista2.txt", "a") as r:
+                                with open ("resultados/v5_fitness_pista2.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v4_gn_pista2.txt", "a") as gen:
+                                with open ("resultados/v5_gn_pista2.txt", "a") as gen:
                                     gen.write("teste\n")
                                     gen.write(generations)
                                     gen.write("\n\n")
