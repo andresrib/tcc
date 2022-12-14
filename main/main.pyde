@@ -7,7 +7,7 @@ import player, track, navigator
 #escolha da pista, entre 0 1 e 2
 nPista=2
 #modo de treino, sendo 0 nao treinando, 1 treinando visualmente de forma lenta e 2 sendo o treino nao visual rapido
-trainingMode = 2
+trainingMode = 3
 
 colisionWeight = 1
 
@@ -214,7 +214,7 @@ def draw():
                 candidate.navigate()
                 candidate.trainNpc()
             print(candidate.fitness)
-        with open("resultados/todos_fitness_pista2.txt", "w") as fit:
+        with open("resultados/todos2_fitness_pista2.txt", "w") as fit:
             average = 0
             for candidate in ai:
                 average += candidate.fitness
@@ -222,7 +222,7 @@ def draw():
                     best = candidate#[candidate.desiredSpeed, candidate.turningSpeed, candidate.startingReverseDelay, candidate.fitness]
             #print(best)
             fit.write(str(best.fitness) + "\t"  + str(average/30) + "\n")
-        with open("resultados/todos_gn_pista2.txt", "w") as gn:
+        with open("resultados/todos2_gn_pista2.txt", "w") as gn:
                 for candidate in ai:
                     gn.write(str(candidate.desiredSpeed) + " " + str(candidate.turningSpeed) + " " + str(candidate.startingReverseDelay) + " " + str(candidate.fitness) + "\n")
         exit()
