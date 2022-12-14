@@ -5,9 +5,9 @@ from importlib import import_module
 import player, track, navigator
 
 #escolha da pista, entre 0 1 e 2
-nPista=0#random.randint(0, 2)
+nPista=2#random.randint(0, 2)
 #modo de treino, sendo 0 nao treinando, 1 treinando visualmente de forma lenta e 2 sendo o treino nao visual rapido
-trainingMode = 0
+trainingMode = 2
 
 pista = []
 
@@ -174,11 +174,11 @@ def draw():
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 2:
-                                with open ("resultados/v1_fitness_pista2.txt", "a") as r:
+                                with open ("resultados/v1H_fitness_pista2.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v1_gn_pista2.txt", "a") as gen:
+                                with open ("resultados/v1H_gn_pista2.txt", "a") as gen:
                                     gen.write("teste\n")
                                     gen.write(generations)
                                     gen.write("\n\n")
