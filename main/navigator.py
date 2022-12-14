@@ -57,10 +57,10 @@ class navigator():
                 self.middlePoint = False
                 #exit()
         elif(self.track == 2):
-            if(self.previousY>190 and self.npc.y <= 190 and self.npc.x > 400 and self.npc.x < 500):
+            if(self.previousX>450 and self.npc.x <= 450 and self.npc.y > 380):
                 self.middlePoint = True
                 #exit()
-            if(self.previousY>210 and self.npc.y <= 210 and self.npc.x > 400 and self.npc.x < 500 and self.middlePoint):
+            if(self.previousY>210 and self.npc.y <= 210 and self.npc.x > 380 and self.npc.x < 500 and self.middlePoint):
                 self.laps = self.laps + 1
                 self.middlePoint = False
                 #exit()
