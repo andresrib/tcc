@@ -181,11 +181,11 @@ def draw():
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 2:
-                                with open ("resultados/v2_population_fitness_pista2.txt", "a") as r:
+                                with open ("resultados/v2H_population_fitness_pista2.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v2_population_gn_pista2.txt", "a") as gen:
+                                with open ("resultados/v2H_population_gn_pista2.txt", "a") as gen:
                                     gen.write("teste\n")
                                     gen.write(generations)
                                     gen.write("\n\n")
