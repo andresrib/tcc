@@ -30,8 +30,8 @@ def setup():
         initial_x = 450
         initial_y = 180
     car = player.player(initial_x, initial_y)
-    #inicia um navegador de teste para o modo de treino 0 0 14 52.0 72.0 57.0
-    tester = navigator.navigator(car, 0, 0, 14, nPista, 52, 72, 57)
+    #inicia um navegador de teste para o modo de treino 12 10 43 45.0 55.0 55.0
+    tester = navigator.navigator(car, 12, 10, 43, nPista, 45, 55, 55)
     #inicia os 30 navegadores iniciais para o treino
     for i in range(30):
         ai.append(navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), nPista, random.randint(30, 90), random.randint(30, 90), random.randint(30, 90)))
@@ -168,10 +168,7 @@ def draw():
                         rDelay = best.startingReverseDelay
                         msDistance =  best.middleSensorDistance
                         csDistance = best.cornerSensorsDistance
-                        ssDistance = best.sideSensorsDistance
-                        
-                        
-                            
+                        ssDistance = best.sideSensorsDistance        
                     if dSpeed < 1:
                         dSpeed = 1
                     if dSpeed > 15:
@@ -276,6 +273,8 @@ def draw():
         #print("middle: " + str(tester.middlePoint) + "\nlaps: " + str(tester.laps))
         strokeWeight(10)
         stroke(0, 0, 255)
+        #line(500, 210, 380, 210)
+        #line(450, 0, 450, 700)
         #car.drawPlayer()
         tester.drawNpc()
         
