@@ -5,9 +5,9 @@ from importlib import import_module
 import player, track, navigator
 
 #escolha da pista, entre 0 1 e 2
-nPista=0
+nPista=2
 #modo de treino, sendo 0 nao treinando, 1 treinando visualmente de forma lenta e 2 sendo o treino nao visual rapido
-trainingMode = 0
+trainingMode = 2
 
 colisionWeight = 1
 
@@ -33,7 +33,8 @@ def setup():
         initial_y = 180
     car = player.player(initial_x, initial_y)
     #inicia um navegador de teste para o modo de treino 0 0 14 52.0 72.0 57.0, 1 2 14 50 72.0 61.0
-    tester = navigator.navigator(car, 1, 2, 14, nPista, 50, 72, 61)
+    #3 5 14 61.0 74.0 40
+    tester = navigator.navigator(car, 11, 8, 29, nPista, 34, 56, 46)
     #inicia os 30 navegadores iniciais para o treino
     for i in range(30):
         ai.append(navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), nPista, random.randint(30, 90), random.randint(30, 90), random.randint(30, 90)))
@@ -241,6 +242,11 @@ def draw():
         #car.accelerate()
         track.desenha(pista, nPista)
         tester.navigate()
+        if tester.laps < goal:
+            tester.fitness = tester.fitness+1
+        else:
+            print(tester.fitness)
+            exit()
         #print("middle: " + str(tester.middlePoint) + "\nlaps: " + str(tester.laps))
         strokeWeight(10)
         stroke(0, 0, 255)
