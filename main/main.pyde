@@ -7,7 +7,7 @@ import player, track, navigator
 #escolha da pista, entre 0 1 e 2
 nPista=1
 #modo de treino, sendo 0 nao treinando, 1 treinando visualmente de forma lenta e 2 sendo o treino nao visual rapido
-trainingMode = 0
+trainingMode = 2
 
 colisionWeight = 10
 
@@ -36,7 +36,7 @@ def setup():
     #3 5 14 61.0 74.0 40
     tester = navigator.navigator(car, 11, 8, 29, nPista, 63, 56, 47)
     #inicia os 30 navegadores iniciais para o treino
-    for i in range(30):
+    for i in range(60):
         ai.append(navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), nPista, random.randint(30, 90), random.randint(30, 90), random.randint(30, 90)))
     #inicia um placeholder para o melhor da geracao
     best = navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), nPista, random.randint(30, 90), random.randint(30, 90), random.randint(30, 90))#[0, 0, 0, 1802]
@@ -120,7 +120,9 @@ def draw():
         #testa todos os candidatos ao mesmo tempo para melhor otimizacao
         while(ai[0].laps < goal or ai[1].laps < goal or ai[2].laps < goal or ai[3].laps < goal or ai[4].laps < goal or ai[5].laps < goal or ai[6].laps < goal or ai[7].laps < goal or ai[8].laps < goal or ai[9].laps < goal or ai[10].laps < goal 
                   or ai[11].laps < goal or ai[12].laps < goal or ai[13].laps < goal or ai[14].laps < goal or ai[15].laps < goal or ai[16].laps < goal or ai[17].laps < goal or ai[18].laps < goal or ai[19].laps < goal or ai[20].laps < goal 
-                      or ai[21].laps < goal or  ai[22].laps < goal or ai[23].laps < goal or ai[24].laps < goal or ai[25].laps < goal or ai[26].laps < goal or ai[27].laps < goal or ai[28].laps < goal or ai[29].laps < goal):
+                      or ai[21].laps < goal or  ai[22].laps < goal or ai[23].laps < goal or ai[24].laps < goal or ai[25].laps < goal or ai[26].laps < goal or ai[27].laps < goal or ai[28].laps < goal or ai[29].laps < goal or ai[30].laps < goal or ai[31].laps < goal or ai[32].laps < goal or ai[33].laps < goal or ai[34].laps < goal or ai[35].laps < goal or ai[36].laps < goal or ai[37].laps < goal or ai[38].laps < goal or ai[39].laps < goal or ai[40].laps < goal 
+                  or ai[41].laps < goal or ai[42].laps < goal or ai[43].laps < goal or ai[44].laps < goal or ai[45].laps < goal or ai[46].laps < goal or ai[47].laps < goal or ai[48].laps < goal or ai[49].laps < goal or ai[50].laps < goal 
+                      or ai[51].laps < goal or  ai[52].laps < goal or ai[53].laps < goal or ai[54].laps < goal or ai[55].laps < goal or ai[56].laps < goal or ai[57].laps < goal or ai[58].laps < goal or ai[59].laps < goal):
             for candidate in ai:
                 if candidate.laps < goal:
                     candidate.fitness = candidate.fitness+1
@@ -184,29 +186,29 @@ def draw():
                             generations = gn.read()
                             #print(results)
                             if nPista == 0:
-                                with open ("resultados/v7_fitness_pista0.txt", "a") as r:
+                                with open ("resultados/v8_fitness_pista0.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v7_gn_pista0.txt", "a") as gen:
+                                with open ("resultados/v8_gn_pista0.txt", "a") as gen:
                                     gen.write("teste\n\n")
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 1:
-                                with open ("resultados/v7_fitness_pista1.txt", "a") as r:
+                                with open ("resultados/v8_fitness_pista1.txt", "a") as r:
                                     r.write("melhor e media\n")
                                     r.write(results)
                                     r.write("\n")
-                                with open ("resultados/v7_gn_pista1.txt", "a") as gen:
+                                with open ("resultados/v8_gn_pista1.txt", "a") as gen:
                                     gen.write("teste\n\n")
                                     gen.write(generations)
                                     gen.write("\n")
                             if nPista == 2:
-                                with open ("resultados/v7_fitness_pista2.txt", "a") as r:
+                                with open ("resultados/v8_fitness_pista2.txt", "a") as r:
                                     r.write("melhor e media\n\n")
                                     r.write(results)
                                     r.write("\n\n")
-                                with open ("resultados/v7_gn_pista2.txt", "a") as gen:
+                                with open ("resultados/v8_gn_pista2.txt", "a") as gen:
                                     gen.write("teste\n")
                                     gen.write(generations)
                                     gen.write("\n\n")
