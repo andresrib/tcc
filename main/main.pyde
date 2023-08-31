@@ -5,7 +5,7 @@ from importlib import import_module
 import player, track, navigator
 
 
-nPista=2
+nPista=1
 #modo de treino, sendo 0 nao treinando, 1 treinando visualmente de forma lenta e 2 sendo o treino nao visual rapido
 trainingMode = 2
 
@@ -17,10 +17,12 @@ populacao = 60
 
 pista = []
 
-runTimes = 10
+runTimes = 3
 
 #escolha das pista, entre 0 1 e 2
 tracks = [0, 1, 2]
+
+ran = 0
 
 
 
@@ -52,6 +54,7 @@ def setup():
     #inicia um placeholder para o melhor da geracao
     best = navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), tracks[nPista], random.randint(30, 90), random.randint(30, 90), random.randint(30, 90))#[0, 0, 0, 1802]
     best.fitness = 1000000000
+    clear()
     background(255)
     track.desenha(pista, tracks[nPista])
     
@@ -147,7 +150,7 @@ def draw():
                     best = candidate#[candidate.desiredSpeed, candidate.turningSpeed, candidate.startingReverseDelay, candidate.fitness]
             #print(best)
             fit.write(str(best.fitness) + "\t"  + str(average/populacao) + "\n")
-            ai = crossover(ai)
+            crossover()
             
     #testa todas as possibilidades
     elif(trainingMode == 3):
@@ -193,13 +196,13 @@ def draw():
         tester.drawNpc()
 
 #crossover
-def crossover(ai):
-    global loops
+def crossover():
+    global loops, ai, nPista, ran, runTimes
     newAi = []
     with open("gn.txt", "a") as gn:
         for candidate in ai:
             gn.write(str(candidate.desiredSpeed) + " " + str(candidate.turningSpeed) + " " + str(candidate.startingReverseDelay) + " " + str(candidate.middleSensorDistance) + " " + str(candidate.cornerSensorsDistance) + " " + str(candidate.sideSensorsDistance) + " " + str(candidate.fitness) + "\n")
-            if (candidate != best):#candidate.desiredSpeed != best[0] or candidate.turningSpeed != best[1] or candidate.startingReverseDelay != best[2]):
+            if (candidate != best):
                 
                 percentual = random.randint(2, 12)/10.0        
                 dSpeed = candidate.desiredSpeed + ( - candidate.desiredSpeed + best.desiredSpeed) * percentual
@@ -255,11 +258,13 @@ def crossover(ai):
                     csDistance = random.randint(30,90)
                 if(random.randint(1, 10) == 1):
                     ssDistance = random.randint(30,90)
+                newAi.append(navigator.navigator(player.player(initial_x, initial_y), int(dSpeed), int(tSpeed), int(rDelay), tracks[nPista], msDistance, csDistance, ssDistance))
+                
             else:
                 newAi.append(best)
-            newAi.append(navigator.navigator(player.player(initial_x, initial_y), int(dSpeed), int(tSpeed), int(rDelay), tracks[nPista], msDistance, csDistance, ssDistance))
+            
         gn.write("\n")
-        #ai = newAi
+        ai = newAi
         #print(loops)
         if(loops >= geracoes):
             #salva os dados do experimento em arquivos persistentes
@@ -295,11 +300,47 @@ def crossover(ai):
                             gen.write("teste\n")
                             gen.write(generations)
                             gen.write("\n\n")
+            """if ran < runTimes:
+                ran = ran + 1
+                restart()
+                return(ai)"""
             exit()
         loops = loops + 1    
         return(newAi)
         
+def restart():
+    global car, ai, loops, candidate_number, tester, initial_x, initial_y, best, goal, tracks, nPista
+    goal = 2
+    ai = []
+    #define as posicoes iniciais do carro de acordo com a pista
+    if(tracks[nPista] == 0):
+        initial_x = 450
+        initial_y = 180
+    elif(tracks[nPista] == 1):
+        initial_x = 400
+        initial_y = 180
+    elif(tracks[nPista] == 2):
+        initial_x = 450
+        initial_y = 180
+    car = player.player(initial_x, initial_y)
+    #inicia os 30 navegadores iniciais para o treino
+    for i in range(populacao):
+        ai.append(navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), tracks[nPista], random.randint(30, 90), random.randint(30, 90), random.randint(30, 90)))
+    #inicia um placeholder para o melhor da geracao
+    best = navigator.navigator(player.player(450, 180), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), tracks[nPista], random.randint(30, 90), random.randint(30, 90), random.randint(30, 90))
+    best.fitness = 1000000000
     
+    loops = 0
+    candidate_number = 0
+    
+    #apaga os dados dos arquivos
+    if(trainingMode != 0):
+        open('Fitness.txt', 'w').close()
+        open('gn.txt', 'w').close()
+        #frameRate(28800)
+        #frameRate(180)
+    else:
+        frameRate(30)    
     
     
     
