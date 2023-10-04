@@ -64,7 +64,7 @@ class navigator():
                 self.laps = self.laps + 1
                 self.middlePoint = False
                 #exit()
-        if(self.fitness>3600):
+        if(self.fitness>1800):
             self.laps = 10
         
     def navigate(self):
