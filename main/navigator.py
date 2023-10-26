@@ -39,7 +39,7 @@ class navigator():
         self.npc.training()
     
     #verifica se o navegador passou pelo checkpoint e terminou a pista, no sentido horario
-    def finishTrack(self):
+    def finishTrack(self, limiter = True):
         if(self.track == 0):
             if(self.previousX>450 and self.npc.x <= 450 and self.npc.y > 400 and self.npc.y < 500):
                 self.middlePoint = True
@@ -64,7 +64,7 @@ class navigator():
                 self.laps = self.laps + 1
                 self.middlePoint = False
                 #exit()
-        if(self.fitness>1800):
+        if(self.fitness>3600 and limiter):
             self.laps = 10
         
     def navigate(self):

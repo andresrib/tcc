@@ -4,30 +4,31 @@ import random
 from importlib import import_module
 import player, track, navigator
 
+player_name = "andre"
 
-nPista=2
+nPista=1
 #modo de treino, sendo 0 nao treinando, 1 treinando visualmente de forma lenta e 2 sendo o treino nao visual rapido
 trainingMode = 0
 
 colisionWeight = 0
 
-geracoes = 50
+geracoes = 100
 
-populacao = 30
+populacao = 60
 
 runTimes = 30
 
-mutation = 5
+mutation = 10
 
-trainSensors = False
+trainSensors = True
 
 newCross = False
 
-myCross = False
+myCross = True
 
 goal = 1
 
-resultFileName = "rerrodar_1Lap_initial"
+resultFileName = "rerrodar_Sensors_10Colision_Mycross"
 
 pista = []
 
@@ -47,8 +48,17 @@ recordCounter = 0
 
 start = False
 
+myFitness = 0
+
+navigatorData = """10 15 23 82 52 73 1531 1
+13 12 43 82 55 69 1451 2
+12 12 43 73 55 67 1421 4
+12 12 32 73 55 66 1411 8
+12 12 32 73 55 68 1350 16
+12 12 32 73 55 68 1345 100"""
+
 def setup():
-    global car, ai, loops, candidate_number, tester, initial_x, initial_y, best, goal, tracks, nPista, lastGenBest, recordNavigators
+    global car, ai, loops, candidate_number, tester, initial_x, initial_y, best, goal, tracks, nPista, lastGenBest, recordNavigators, navigatorData, trainingMode
     
     size(1200, 700)
     track.inicializa_pista(pista, tracks[nPista])
@@ -64,11 +74,19 @@ def setup():
         initial_x = 450
         initial_y = 180
     car = player.player(initial_x, initial_y)
-    recordNavigators = [[navigator.navigator(player.player(initial_x, initial_y), 9, 5, 36, tracks[nPista], 59, 64), 1], 
-                     [navigator.navigator(player.player(initial_x, initial_y), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), tracks[nPista], random.randint(30, 90), random.randint(30, 90)), 10],
-                      [navigator.navigator(player.player(initial_x, initial_y), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), tracks[nPista], random.randint(30, 90), random.randint(30, 90)), 25],
-                       [navigator.navigator(player.player(initial_x, initial_y), random.randint(1, 15), random.randint(1, 15), random.randint(1, 60), tracks[nPista], random.randint(30, 90), random.randint(30, 90)), 50]]
-
+    if trainingMode == 4:
+        recordNavigators = []
+        racers = navigatorData.split("\n")
+        for racer in racers:
+            atributes = racer.split(" ")
+            print(atributes)
+            recordNavigators.append([navigator.navigator(player.player(initial_x, initial_y), int(atributes[0]), int(atributes[1]), int(atributes[2]), tracks[nPista], int(atributes[3]), int(atributes[4]), int(atributes[5])), int(atributes[7])])
+    """recordNavigators = [[navigator.navigator(player.player(initial_x, initial_y), 12, 10, 60, tracks[nPista], 76, 60, 80), 1], 
+                     [navigator.navigator(player.player(initial_x, initial_y), 12, 7, 41, tracks[nPista], 64, 56, 55), 2],
+                      [navigator.navigator(player.player(initial_x, initial_y), 12, 14, 53, tracks[nPista], 43, 57, 63), 4],
+                       [navigator.navigator(player.player(initial_x, initial_y), 15, 13, 58, tracks[nPista], 74, 54, 77), 8],
+                        [navigator.navigator(player.player(initial_x, initial_y), 15, 13, 58, tracks[nPista], 74, 56, 76), 16]]
+"""
     #inicia um navegador de teste para o modo de treino 0 0 14 52.0 72.0 57.0, 1 2 14 50 72.0 61.0
     #3 5 14 61.0 74.0 40
     tester = navigator.navigator(car, 11, 8, 29, tracks[nPista], 63, 56, 47)
@@ -232,15 +250,24 @@ def draw():
             recordNavigators[recordCounter][0].drawNpc()   
             if recordNavigators[recordCounter][0].laps < goal:
                 recordNavigators[recordCounter][0].fitness += 1
+                fill(150,0,0)
+                textSize(50)
+                text("Fitness: " + str(recordNavigators[recordCounter][0].fitness + 1 + recordNavigators[recordCounter][0].npc.colisions * colisionWeight), 800, 60)
+                fill(255)
             else:
                 recordCounter += 1
+                background(255)
+                track.desenha(pista, tracks[nPista])
+                time.sleep(1)
                 if recordCounter >= len(recordNavigators):
                     start = False
             
     #training mode 0, modo de controle manual           
     else:
         background(255)
-        car.accelerate()
+        tester.previousX = tester.npc.x
+        tester.previousY = tester.npc.y
+        tester.npc.accelerate()
         track.desenha(pista, tracks[nPista])
         #tester.navigate()
         if tester.laps < goal:
@@ -251,9 +278,18 @@ def draw():
         #print("middle: " + str(tester.middlePoint) + "\nlaps: " + str(tester.laps))
         strokeWeight(10)
         stroke(0, 0, 255)
-        car.drawPlayer()
-        #tester.drawNpc()
-    
+        #car.drawPlayer()
+        tester.npc.drawPlayer()
+        #dprint(tester.npc.x)
+        tester.finishTrack(limiter = False)        
+        if start:
+            if tester.laps < goal:
+                tester. fitness += 1
+            else:
+                with open("fitness_" + player_name + "_pista" + str(nPista) + ".txt", "a") as fit:
+                    fit.write(str(tester.fitness) + "\n")
+                print(tester.fitness)
+                exit()
     if trainingMode == 1 or trainingMode ==2:
         if ran < runTimes and loops > geracoes:
             restart()
@@ -496,8 +532,10 @@ def restart():
    
 #define os controles para o modo manual
 def keyPressed():
+    global start, car
     if(key == 'w' or key == 'W'):
         car.setFowardTrue()
+        start = True
     if(key == 's' or key == 'S'):
         car.setBackTrue()
     if(key == 'a' or key == 'A'):
